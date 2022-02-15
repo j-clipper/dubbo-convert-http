@@ -1,0 +1,50 @@
+server:
+  port: 10001
+spring:
+  application:
+    name: dubbo-proxy-web
+  cloud:
+    inetutils:
+      preferredNetworks: [ '192.168' ]
+    nacos:
+      discovery:
+        server-addr: 192.168.40.56:8848 #nacos注册中心地址
+        namespace: uat-207 #对应的namespaceId
+        service: ${spring.application.name}
+
+jclipper:
+  dubbo:
+    convert:
+      http:
+        enabled: true
+        scan-packages:
+          - jclipper.dubbo.demo.remote.api
+        application: dubbo-convert-http-demo
+dubbo:
+    cloud:
+      subscribed-services: smart-campus-user-auth # 需要调用接口的订阅项目，多个服务间用逗号分割
+
+#logging:
+#  level:
+#    root: debug
+#dubbo:
+#  application:
+#    name: ${spring.application.name} # 项目名称
+#  scan:
+#    base-packages: cn.strong.smart.campus.user.account.remote # 远程接口扫描包
+#  protocol:
+#    id: dubbo
+#    name: dubbo
+#    port: -1
+#  registry:
+#    address: spring-cloud://localhost #通过SpringCloud方式进行注册
+#  provider: # 默认服务配置
+#    timeout: 30000 # 超时设置
+#    retries: 0 # 重试次数
+#    filter: -exception,dubboExceptionFilter
+#  consumer: # 消费者配置
+#    timeout: 20000 #调用服务超时
+#    retries: 0 # 重试次数
+#    check: false # 启动不检查服务
+#  cloud:
+#    subscribed-services: smart-campus-user-auth # 需要调用接口的订阅项目，多个服务间用逗号分割
