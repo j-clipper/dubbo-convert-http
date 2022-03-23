@@ -31,6 +31,10 @@ public class NacosServiceInstanceDiscovery implements ServiceInstanceDiscovery {
                 return null;
             }
             Optional<Instance> find = instances.stream().filter(instance -> {
+                //ip为空，返回第一个实例
+                if (ip == null) {
+                    return true;
+                }
                 boolean b = instance.getIp().equals(ip);
                 if (port == null) {
                     return b;
