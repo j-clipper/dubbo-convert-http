@@ -30,9 +30,9 @@ public class DubboMetadataParserTest {
         SelectRequest request = SelectRequest.builder()
                 .serverAddress("http://192.168.20.156:8848")
                 .namespace("8a87e535-6c65-45b0-8cf2-2e57c9563651")
-                .serviceName("strong-account")
-                .ip("192.168.20.2")
-                .ip("192.168.150.78")
+                .serviceName("tutor")
+//                .ip("10.42.3.155")
+//                .ip("192.168.150.78")
                 .build();
 
         Map<String, List<DubboUrlInfo>> metadata = finder.getDubboMetadata(request);

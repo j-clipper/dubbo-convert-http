@@ -59,7 +59,7 @@ public class InterfaceScanner {
 
 
     private Set<Class<?>> findAllClassesUsingGoogleGuice(String... packages) throws IOException {
-        return ClassPath.from(getClassLoader(this.project))
+        return ClassPath.from(getClassLoader(this.project,this.log,this.getClass().getClassLoader()))
                 .getAllClasses()
                 .stream()
                 .filter(clazz -> Arrays.stream(packages).anyMatch(pkg -> clazz.getPackageName().startsWith(pkg)))
@@ -70,9 +70,10 @@ public class InterfaceScanner {
     /**
      * @param project
      * @return
-     * @see <a href="https://blog.csdn.net/qq_35425070/article/details/107651270">https://blog.csdn.net/qq_35425070/article/details/107651270</a>
+     * @see <a href="https://blog.csdn.net/qq_35425070/article/details/107651270"></a>
+     * @see <a href="https://www.cnblogs.com/coder-chi/p/11305498.html"></a>
      */
-    private ClassLoader getClassLoader(MavenProject project) {
+    public static ClassLoader getClassLoader(MavenProject project,Log log,ClassLoader defaultClassLoader) {
         try {
             // 所有的类路径环境，也可以直接用 compilePath
             List<String> classpathElements = project.getCompileClasspathElements();
@@ -85,10 +86,10 @@ public class InterfaceScanner {
                 urls[i] = new File(classpathElements.get(i)).toURL();
             }
             // 自定义类加载器
-            return new URLClassLoader(urls, this.getClass().getClassLoader());
+            return new URLClassLoader(urls, defaultClassLoader);
         } catch (Exception e) {
-            log.error("Couldn't get the classloader.");
-            return this.getClass().getClassLoader();
+            log.debug("Couldn't get the classloader.");
+            return defaultClassLoader;
         }
     }
 }

@@ -23,18 +23,10 @@
             </goals>
         </execution>
     </executions>
-    <dependencies>
-        <dependency>
-            <groupId>com.wf2311.jclipper</groupId>
-            <artifactId>dubbo-convert-http-demo-remote-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
 </plugin>
 ```
 
-其中`scanPackage`的值要扫描的dubbo接口所在包路径，支持声明多个，
-`dependencies`中为dubbo-api的依赖；
+其中`scanPackage`的值要扫描的dubbo接口所在包路径，支持声明多个；
 
 ### 测试
 在项目下运行`mvn -DskipTests clean install`命令
@@ -97,7 +89,7 @@ jclipper:
 ```
 
 ### swagger包扫描路径改动
-例如，在leke-crm项目中，原先配置的swagger包扫描路径是`jclipper.dubbo.demo.controller`
+例如，在dubbo-convert-http-demo项目中，原先配置的swagger包扫描路径是`jclipper.dubbo.demo.controller`
 ![](docs/images/16375875740126.png)
 
 为了同时扫描的dubbo接口所在包路径，需要取其公共父包路径`jclipper.dubbo.demo`或`jclipper.dubbo`

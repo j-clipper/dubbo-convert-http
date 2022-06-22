@@ -20,6 +20,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
@@ -30,7 +31,8 @@ import java.util.Set;
 
 @Mojo(
         name = "generate-default-springmvc-impl",
-        defaultPhase = LifecyclePhase.GENERATE_SOURCES
+        defaultPhase = LifecyclePhase.COMPILE,
+        requiresDependencyResolution = ResolutionScope.COMPILE
 )
 public class GenerateDefaultSpringMvcImplMojo extends AbstractMojo {
 
@@ -117,7 +119,7 @@ public class GenerateDefaultSpringMvcImplMojo extends AbstractMojo {
     )
     String targetSubPackage;
 
-    @Parameter(defaultValue = "${project}", readonly = true)
+    @Parameter(defaultValue = "${project}", readonly = true, required = true)
     public MavenProject project;
 
     @Override
@@ -163,7 +165,7 @@ public class GenerateDefaultSpringMvcImplMojo extends AbstractMojo {
         FileWriter fileWriter = null;
 
         try {
-            Class<?> interfaceClass = Class.forName(interfaceName);
+            Class<?> interfaceClass = InterfaceScanner.getClassLoader(project,getLog(),this.getClass().getClassLoader()).loadClass(interfaceName);
             String realTargetPackage = getRealTargetPackage(interfaceClass);
             File javaScrPackage = getJavaScrPackage(realTargetPackage);
             String implClassName = classNamePrefix + interfaceClass.getSimpleName() + classNamePostfix;
